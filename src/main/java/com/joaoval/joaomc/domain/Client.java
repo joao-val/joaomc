@@ -1,5 +1,6 @@
 package com.joaoval.joaomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.joaoval.joaomc.domain.enums.ClientType;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class Client implements Serializable {
     private String clientIdNumber;
     private Integer type;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "client")
     private List<Address> addresses = new ArrayList<>();
 
