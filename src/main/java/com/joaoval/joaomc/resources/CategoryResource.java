@@ -1,6 +1,10 @@
 package com.joaoval.joaomc.resources;
 
 import com.joaoval.joaomc.domain.Category;
+import com.joaoval.joaomc.services.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,15 +16,12 @@ import java.util.List;
 @RequestMapping(value = "/categories")
 public class CategoryResource {
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Category> list() {
-        Category cat1 = new Category(1, "Informatics");
-        Category cat2 = new Category(2, "Office");
+    @Autowired
+    private CategoryService service;
 
-        List<Category> list = new ArrayList<>();
-        list.add(cat1);
-        list.add(cat2);
-
-        return list;
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<?> find(@PathVariable Integer id) {
+        Category obj = service.search(id);
+        return ResponseEntity.ok().body(obj);
     }
 }
