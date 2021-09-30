@@ -1,13 +1,8 @@
 package com.joaoval.joaomc;
 
-import com.joaoval.joaomc.domain.Category;
-import com.joaoval.joaomc.domain.City;
-import com.joaoval.joaomc.domain.Product;
-import com.joaoval.joaomc.domain.State;
-import com.joaoval.joaomc.repositories.CategoryRepository;
-import com.joaoval.joaomc.repositories.CityRepository;
-import com.joaoval.joaomc.repositories.ProductRepository;
-import com.joaoval.joaomc.repositories.StateRepository;
+import com.joaoval.joaomc.domain.*;
+import com.joaoval.joaomc.domain.enums.ClientType;
+import com.joaoval.joaomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,6 +24,12 @@ public class JoaomcApplication implements CommandLineRunner {
 
 	@Autowired
 	private CityRepository cityRepository;
+
+	@Autowired
+	private ClientRepository clientRepository;
+
+	@Autowired
+	private AddressRepository addressRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(JoaomcApplication.class, args);
@@ -66,5 +67,18 @@ public class JoaomcApplication implements CommandLineRunner {
 
 		stateRepository.saveAll(Arrays.asList(sta1, sta2));
 		cityRepository.saveAll(Arrays.asList(c1, c2, c3));
+
+		Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com", "36378912377", ClientType.PERSON);
+
+		cli1.getTelephones().addAll(Arrays.asList("27363323", "93838393"));
+
+		Address a1 = new Address(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
+		Address a2 = new Address(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+
+		cli1.getAddresses().addAll(Arrays.asList(a1, a2));
+
+		clientRepository.saveAll(Arrays.asList(cli1));
+		addressRepository.saveAll(Arrays.asList(a1, a2));
+
 	}
 }
