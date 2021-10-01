@@ -1,5 +1,6 @@
 package com.joaoval.joaomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.joaoval.joaomc.domain.enums.PaymentStatus;
 
 import javax.persistence.Entity;
@@ -9,7 +10,10 @@ import java.util.Date;
 public class PaymentWithBankSlip extends Payment{
     static public final long serialVersionUID = 1L;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dueDate;
+
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date paymentDate;
 
     public PaymentWithBankSlip() {

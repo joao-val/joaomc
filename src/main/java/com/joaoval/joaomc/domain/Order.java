@@ -1,5 +1,8 @@
 package com.joaoval.joaomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,11 +17,15 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date instant;
 
+    @JsonManagedReference
     @OneToOne(cascade=CascadeType.ALL, mappedBy="order") /*Indicating thats was mapped by the order in the Order Class. 1to1 mapping*/
     private Payment payment;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name="client_id")
     private Client client;
