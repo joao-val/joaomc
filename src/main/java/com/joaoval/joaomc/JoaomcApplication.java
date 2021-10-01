@@ -2,12 +2,14 @@ package com.joaoval.joaomc;
 
 import com.joaoval.joaomc.domain.*;
 import com.joaoval.joaomc.domain.enums.ClientType;
+import com.joaoval.joaomc.domain.enums.PaymentStatus;
 import com.joaoval.joaomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -30,6 +32,12 @@ public class JoaomcApplication implements CommandLineRunner {
 
 	@Autowired
 	private AddressRepository addressRepository;
+
+	@Autowired
+	private OrderRepository orderRepository;
+
+	@Autowired
+	private PaymentRepository paymentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(JoaomcApplication.class, args);
@@ -80,5 +88,20 @@ public class JoaomcApplication implements CommandLineRunner {
 		clientRepository.saveAll(Arrays.asList(cli1));
 		addressRepository.saveAll(Arrays.asList(a1, a2));
 
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+		Order ord1 = new Order(null, sdf.parse("30/09/2017 10:32"), cli1, a1);
+		Order ord2 = new Order(null, sdf.parse("10/10/2017 19:35"), cli1, a2);
+
+		Payment pay1 = new CardPayment(null, PaymentStatus.PAID_OUT, ord1, 6);
+		ord1.setPayment(pay1);
+
+		Payment pay2 = new PaymentWithBankSlip(null, PaymentStatus.PENDING, ord2, sdf.parse("20/10/2017 00:00"), null);
+		ord2.setPayment(pay2);
+
+		cli1.getOrders().addAll(Arrays.asList(ord1, ord2));
+
+		orderRepository.saveAll(Arrays.asList(ord1, ord2));
+		paymentRepository.saveAll(Arrays.asList(pay1, pay2));
 	}
 }
