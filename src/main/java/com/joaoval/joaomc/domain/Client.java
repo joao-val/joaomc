@@ -1,8 +1,6 @@
 package com.joaoval.joaomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.joaoval.joaomc.domain.enums.ClientType;
 
 import javax.persistence.*;
