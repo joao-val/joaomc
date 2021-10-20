@@ -2,8 +2,10 @@ package com.joaoval.joaomc.services;
 
 import com.joaoval.joaomc.domain.Category;
 import com.joaoval.joaomc.repositories.CategoryRepository;
+import com.joaoval.joaomc.services.exception.DataIntegrityException;
 import com.joaoval.joaomc.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,4 +31,15 @@ public class CategoryService {
         search(obj.getId());
         return repo.save(obj);
     }
+
+    public void delete(Integer id){
+        repo.findById(id);
+        try {
+            repo.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityException("It is not possible to delete a category that has products");
+        }
+    }
+
 }
